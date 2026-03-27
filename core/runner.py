@@ -1,76 +1,70 @@
-from core.agents import create_coder_agent, create_reviewer_agent, create_user_proxy, get_llm_config
+from core.agents import (
+    create_coder_agent,
+    create_reviewer_agent,
+    create_user_proxy,
+    get_llm_config
+)
 from core.groupchat import create_groupchat, create_manager
 
 
 def run_code_review(code: str, max_rounds: int = 10):
     """
     Runs the full code review conversation.
-
-    Returns:
-        messages: list of all conversation messages
-        approved: True if code was approved
+    Returns messages list and approved boolean.
     """
     print("\n🚀 Starting Code Review System...")
-    print(f"   Max rounds: {max_rounds}")
 
-    # --- Create agents ---
+    # Create agents
     coder = create_coder_agent()
     reviewer = create_reviewer_agent()
     user_proxy = create_user_proxy()
 
-    # --- Create GroupChat ---
+    # Create GroupChat
     groupchat = create_groupchat(coder, reviewer, max_rounds=max_rounds)
     manager = create_manager(groupchat, get_llm_config())
 
-    # --- Build initial message ---
-    initial_message = f"""Please review the following code and provide detailed feedback.
-The Coder will fix any issues you find, and we'll iterate until the code is approved.
+    # Initial message
+    initial_message = f"""Please review the following code carefully.
 
 Code to Review:
-```
+```python
 {code}
 ```
 
-Start by reviewing this code thoroughly.
+Reviewer — please start by reviewing this code thoroughly.
+Coder — fix any issues the reviewer identifies.
+Continue until the Reviewer says APPROVED.
 """
 
-    # --- Start conversation ---
-    print("\n💬 Starting conversation...\n")
+    # Start conversation
     user_proxy.initiate_chat(
         manager,
-        message=initial_message
+        message=initial_message,
+        clear_history=True
     )
 
-    # --- Extract results ---
+    # Extract results
     messages = groupchat.messages
     approved = any(
         "APPROVED" in msg.get("content", "").upper()
         for msg in messages
     )
 
-    print(f"\n{'✅ Code APPROVED!' if approved else '⚠️ Max rounds reached.'}")
+    print(f"\n{'✅ APPROVED!' if approved else '⚠️ Max rounds reached.'}")
     return messages, approved
 
 
 def format_messages_for_display(messages: list) -> list:
-    """
-    Formats GroupChat messages for display in Streamlit or CLI.
-    Returns list of dicts with role, name, content.
-    """
     formatted = []
     for msg in messages:
-        if not msg.get("content"):
-            continue
-
-        name = msg.get("name", "Unknown")
         content = msg.get("content", "")
-        role = msg.get("role", "assistant")
-
+        if not content:
+            continue
+        name = msg.get("name", "Unknown")
         formatted.append({
             "name": name,
             "content": content,
-            "role": role,
+            "role": msg.get("role", "assistant"),
             "is_approved": "APPROVED" in content.upper()
         })
-
     return formatted
