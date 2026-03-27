@@ -1,3 +1,14 @@
+"""
+🚀 AutoGen Code Review System - Streamlit UI
+===========================================
+Multi-agent workflow: Coder ↔ Reviewer until APPROVED.
+Features: Real-time chat, examples, metrics, session state.
+v1.0 - Deploy-ready for Streamlit Cloud (2026).
+Author: Venkata Reddy Bomnavaram (@Venkata1236)
+"""
+
+
+
 import streamlit as st
 import os
 from dotenv import load_dotenv
