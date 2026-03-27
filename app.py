@@ -1,3 +1,14 @@
+"""
+🔥 Code Review CLI - AutoGen Powered
+===================================
+Console version: Paste code → END → See full agent convo.
+Handles loops, errors, .env keys gracefully.
+Bonus: Infinite review mode for batch testing.
+v1.0 - CLI companion to Streamlit app (Mar 2026).
+"""
+
+
+
 import os
 import sys
 from dotenv import load_dotenv
