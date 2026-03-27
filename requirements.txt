@@ -1,4 +1,4 @@
-pyautogen
+autogen-agentchat
 openai
 python-dotenv
 streamlit
