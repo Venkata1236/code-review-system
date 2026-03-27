@@ -1,24 +1,15 @@
-from autogen import GroupChat, GroupChatManager
-
-
 def create_groupchat(coder, reviewer, max_rounds=10):
-    """
-    Creates GroupChat with Coder and Reviewer agents.
-    max_rounds — max conversation turns before forced stop.
-    """
-    groupchat = GroupChat(
+    from autogen import GroupChat
+    return GroupChat(
         agents=[coder, reviewer],
         messages=[],
         max_round=max_rounds,
-        speaker_selection_method="round_robin"  # alternates Coder → Reviewer → Coder
+        speaker_selection_method="round_robin"
     )
-    return groupchat
 
 
 def create_manager(groupchat, llm_config):
-    """
-    GroupChatManager orchestrates who speaks next.
-    """
+    from autogen import GroupChatManager
     return GroupChatManager(
         groupchat=groupchat,
         llm_config=llm_config
