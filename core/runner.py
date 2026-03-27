@@ -1,3 +1,15 @@
+"""
+⚙️ Core Orchestrator - Runs Agent Conversations
+=============================================
+Bridges agents/groupchat → full review cycle.
+Key: initiate_chat() + APPROVED detection + formatting.
+Scalable to more agents/LLMs.
+Production: Error-wrapped for Streamlit/CLI.
+v1.0 - Heart of code-review-system (2026).
+"""
+
+
+
 from core.agents import (
     create_coder_agent,
     create_reviewer_agent,
