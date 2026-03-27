@@ -1,3 +1,15 @@
+"""
+🤖 Agent Factory - Coder & Reviewer Definitions
+=============================================
+GPT-4o-mini configs + termination logic (APPROVED).
+Secrets handling: Streamlit/CLI unified.
+Pro prompts: Structured feedback + code blocks.
+Future: Add UserProxy for human-in-loop.
+v1.0 - Venkata's AI code review agents.
+"""
+
+
+
 import os
 from dotenv import load_dotenv
 
